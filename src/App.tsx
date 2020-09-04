@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
-import styled from'styled-components'
+import styled from 'styled-components'
 import {Login} from "./Components/Login";
 import {useSelector} from "react-redux";
 import {Main} from "./Components/Main";
+import {AppStateT} from "./Redux/Store";
 
 
 export const AppWrapper = styled.div`
@@ -15,9 +16,9 @@ height: 100vh;
 background: #29485f;
 font-size: 30px;
 `
-
-const App=() => {
-  const isAuth = useSelector(state=>state.Reducer.isAuth)
+type PropsT={}
+const App:React.FC<PropsT>=() => {
+  const isAuth = useSelector<AppStateT,boolean>(state=>state.Reducer.isAuth)
 
 
   return (

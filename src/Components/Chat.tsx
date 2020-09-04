@@ -5,7 +5,8 @@ import {emitDeleteMessagesSocket} from "../Redux/Actions";
 
 
 import {PopUpOptions} from "./PopUpOptions";
-import useClickOutside from "click-outside-hook";
+import {deleteMessageObjT, MessageT} from "../Types";
+import {AppStateT} from "../Redux/Store";
 
 export const ChatWrapper = styled.div`
 height: 658px;
@@ -20,7 +21,7 @@ flex-direction: column;
 
 
 `
-export const MessageWrapper = styled.div`
+export const MessageWrapper = styled.div<any>`
 padding:5px 10px;
 display: flex;
 flex-direction: column;
@@ -34,7 +35,7 @@ ${props => props.positionMessage === 'left' ? css`
 `
 
 
-export const Message = styled.div`
+export const Message = styled.div<any>`
 position: relative;
 display: flex;
 background: #62bf6e;
@@ -43,7 +44,7 @@ padding:10px 15px;
 word-break: break-all;
 border-radius: 15px;
 transition: .5s ease;
-${props => props.me && css`
+${(props) => props.me && css`
 &:hover{
 cursor: pointer;
 background: #62f06e;
@@ -56,12 +57,20 @@ font-size: 15px;
 color:#222422;
 `
 
+type PropsT={
+    setMessageValue:(value:string)=>void
+    setShowEditButton:(v:boolean)=>void
+    setMessageId:(id:number)=>void
+    inputEl:any
+}
 
-export const Chat = ({setMessageValue, setShowEditButton, setMessageId, inputEl}) => {
 
-    const messagesRef = useRef(0)
 
-    const messages = useSelector(state => state.Reducer.messages)
+export const Chat:React.FC<PropsT> = ({setMessageValue, setShowEditButton, setMessageId, inputEl}) => {
+
+    const messagesRef = useRef<any>(0)
+
+    const messages = useSelector<AppStateT,Array<MessageT>>(state => state.Reducer.messages)
 
     React.useEffect(() => {
         messagesRef.current.scroll(0, messagesRef.current.scrollHeight);
@@ -79,20 +88,31 @@ export const Chat = ({setMessageValue, setShowEditButton, setMessageId, inputEl}
     </ChatWrapper>
 }
 
+type OneMessagePropsT={
+    setMessageValue:(value:string)=>void
+    setShowEditButton:(v:boolean)=>void 
+        setMessageId:(id:number)=>void
+    inputEl: HTMLInputElement
+m:MessageT
+}
 
-export const OneMessage = ({setMessageValue, setShowEditButton, setMessageId, inputEl, m}) => {
+
+
+// @ts-ignore
+export const OneMessage:React.FC<OneMessagePropsT>= ({setMessageValue,
+                                                          setShowEditButton,
+                                                          setMessageId,
+                                                          inputEl, m}) => {
 
     const [showPopUp, setShowPopUp] = useState(false)
 
 
-    const chatName = useSelector(state => state.Reducer.chatName)
-    const userName = useSelector(state => state.Reducer.userName)
+    const chatName = useSelector<AppStateT,string>(state => state.Reducer.chatName)
+    const userName = useSelector<AppStateT,string|null>(state => state.Reducer.userName)
 
-
-    const dispatch = useDispatch()
 
     const deleteMessage = () => {
-        const deleteMessageObj = {
+        const deleteMessageObj:deleteMessageObjT = {
             chatName,
             messageId: m.id
         }
@@ -111,13 +131,11 @@ export const OneMessage = ({setMessageValue, setShowEditButton, setMessageId, in
 
     }
 
-    const visiblePopUp = () => {
-        setShowPopUp(true)
-    }
-    const closePopUp = () => {
-        setShowPopUp(false)
-    }
-    const ref = useClickOutside(() => setShowPopUp(false))
+    const visiblePopUp = () => setShowPopUp(true)
+
+    const closePopUp = () => setShowPopUp(false)
+
+
 
     if (userName !== m.userName) {
         return <MessageWrapper positionMessage='left'>

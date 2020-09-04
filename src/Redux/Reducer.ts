@@ -1,3 +1,7 @@
+import {InferActionsTypes} from "./Store";
+import {Actions} from "./Actions";
+import {MessageT, UserT} from "../Types";
+
 export const AUTH = 'AUTH'
 export const GET_MESSAGES = 'GET_MESSAGES'
 export const GET_USERS = 'GET_USERS'
@@ -6,14 +10,14 @@ export const NEW_MESSAGE = 'NEW_MESSAGE'
 
 export const initialState = {
     isAuth: false,
-    userName: null,
+    userName: '' as string,
     chatName: 'start',
-    users: [],
-    messages: []
+    users: [] as Array<UserT> ,
+    messages: [] as Array<MessageT>
 }
 
 
-const Reducer = (state = initialState, action) => {
+const Reducer = (state = initialState, action:ActionsTypes):initialStateT => {
     switch (action.type) {
         case AUTH:
             return {
@@ -52,3 +56,7 @@ const Reducer = (state = initialState, action) => {
 }
 
 export default Reducer
+
+export type ActionsTypes=InferActionsTypes<typeof Actions>
+type initialStateT=typeof initialState
+

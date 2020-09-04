@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components"
 import {useDispatch, useSelector} from "react-redux";
 import {AuthThunk} from "../Redux/Actions";
+import {AppStateT} from "../Redux/Store";
+import {PayloadT} from "../Types";
 
 
 export const LoginForm = styled.div`
@@ -39,19 +41,19 @@ background: #2375f3;
 }
 `
 
-
-export const Login = () => {
+type PropsT={}
+export const Login:React.FC<PropsT> = () => {
 
     const [loginValue, setLoginValue] = React.useState('')
     const [passwordValue, setPasswordValue] = React.useState('')
     const dispatch = useDispatch()
-    const chatName = useSelector(state =>state.Reducer.chatName)
+    const chatName = useSelector<AppStateT,string>(state =>state.Reducer.chatName)
 
 
 
 
 
-    const payload={
+    const payload:PayloadT={
         loginValue,
         passwordValue
     }

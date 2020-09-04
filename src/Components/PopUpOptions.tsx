@@ -67,9 +67,12 @@ transition: .5s ease;
     }
 `
 
+type PropsT={
+    editMessage:()=>void
+    deleteMessage:()=>void
+}
 
-
-export const PopUpOptions = ({editMessage,deleteMessage})=>{
+export const PopUpOptions:React.FC<PropsT> = ({editMessage,deleteMessage})=>{
 
     return<PopupBlock >
         <EditBlock onClick={editMessage}>

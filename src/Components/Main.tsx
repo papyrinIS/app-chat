@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import styled, {css} from 'styled-components'
+import styled from 'styled-components'
 import {useDispatch, useSelector} from "react-redux";
 import {Chat} from "./Chat";
 import {
@@ -16,23 +16,22 @@ import complete from '../img/icons/complete.png'
 import send from '../img/icons/send.png'
 import smile from'../img/icons/smile.png'
 
-
-import { Picker } from 'emoji-mart'
+import {BaseEmoji, Picker} from 'emoji-mart'
+import {AppStateT} from "../Redux/Store";
+import {UserT} from "../Types";
 
 
 export const MainBlock = styled.div`
 color: #fff;
 font-size: 25px;
-width: 1200px;
-height: 900px;
 display: grid;
 grid-template-areas: 
 "userInfo chat"
 "rooms chat"
 "users chat"
 "users newMessage";
-grid-template-rows: 50px 150px 500px 200px;
-grid-template-columns: 300px 900px;
+grid-template-rows: 50px 150px 400px 80px;
+grid-template-columns: 200px 700px;
 `
 export const UserInfoBlock = styled.div`
 grid-area: userInfo;
@@ -59,7 +58,7 @@ margin:0 0 0 10px;
 }
 
 `
-export const WorkRoom = styled.div`
+export const WorkRoom = styled.div<{bgColor:string}>`
 padding: 15px;
 width: 90%;
 height: 25px;
@@ -70,7 +69,7 @@ cursor: pointer;
 background: #6190fb;
 }
 `
-export const FloodRoom = styled.div`
+export const FloodRoom = styled.div<{bgColor:string}>`
 background: ${props => props.bgColor};
 padding: 15px;
 width: 100%;
@@ -134,9 +133,9 @@ export const Button = styled.img`
 
 
 
-export const TextareaMessage = styled.textarea`
+export const TextareaMessage = styled.textarea<any>`
 width: 90%;
-height: 128px;
+height: 90%;
 overflow-y: auto;
 background: #fff;
 border-radius: 10px;
@@ -160,18 +159,18 @@ margin: 0 5px;
 max-width: 100px;
 }
 `
-export const Indicator = styled.div`
+export const Indicator = styled.div<{indicator:string}>`
 width: 10px;
 height: 10px;
 border-radius: 100%;
 background: ${props => props.indicator === 'online' ? '#62bf6e' : '#d51515'};
 `
+type PropsT={}
 
-
-export const Main = () => {
+export const Main:React.FC<PropsT> = () => {
     const [messageValue, setMessageValue] = React.useState('')
     const [showEditButton, setShowEditButton] = React.useState(false)
-    const [messageId, setMessageId] = React.useState()
+    const [messageId, setMessageId] = React.useState(0)
     const [showEmoji, setShowEmoji] = React.useState(false)
     const [style, setStyle] = React.useState({
         work: 'transparent',
@@ -179,11 +178,11 @@ export const Main = () => {
     })
 
 
-    const inputEl = useRef(null)
+    const inputEl = useRef<any>(null)
 
-    const users = useSelector(state => state.Reducer.users)
-    const userName = useSelector(state => state.Reducer.userName)
-    const chatName = useSelector(state => state.Reducer.chatName)
+    const users = useSelector<AppStateT,Array<UserT>>(state => state.Reducer.users)
+    const userName = useSelector<AppStateT,string>(state => state.Reducer.userName)
+    const chatName = useSelector<AppStateT,string>(state => state.Reducer.chatName)
 
     const dispatch = useDispatch()
 
@@ -192,6 +191,7 @@ export const Main = () => {
         userName,
         message: messageValue,
         chatName,
+        id:0
     }
     const ChatUsers = users.map(m => <User key={m.userName}>
         <span>{m.userName}</span>
@@ -203,7 +203,7 @@ export const Main = () => {
 
 
     const onChangeFloodChat = () => {
-        dispatch(GetChatThunk('flood', userName))
+        dispatch(GetChatThunk('flood'))
         emitJoinSocket(userName, 'flood')
         setStyle({
             work: 'transparent',
@@ -212,7 +212,7 @@ export const Main = () => {
         cancelEditMessage()
     }
     const onChangeWorkChat = () => {
-        dispatch(GetChatThunk('work', userName))
+        dispatch(GetChatThunk('work'))
         emitJoinSocket(userName, 'work')
         setStyle({
             work: '#61dafb',
@@ -241,15 +241,12 @@ export const Main = () => {
         setShowEditButton(false)
         setMessageValue('')
     }
-    const addEmoji= (emojiTag)=>{
-        setMessageValue(messageValue+emojiTag.native)
-    }
-    const ShowEmoji = ()=>{
-        setShowEmoji(true)
-    }
-    const closeEmoji = ()=>{
-        setShowEmoji(false)
-    }
+    const addEmoji= (emojiTag:BaseEmoji)=>setMessageValue(messageValue+emojiTag.native)
+
+    const ShowEmoji = ()=>setShowEmoji(true)
+
+    const closeEmoji = ()=>setShowEmoji(false)
+
 
 
     useEffect(() => {
@@ -281,14 +278,14 @@ export const Main = () => {
             {chatName !== 'start' && <>
                 <TextareaMessage ref={inputEl}
                                  value={messageValue}
-                                 onChange={(e) => setMessageValue(e.currentTarget.value)}
+                                 onChange={(e:React.FormEvent<HTMLInputElement>) => setMessageValue(e.currentTarget.value)}
                 />
                 <div onMouseLeave={closeEmoji}>
                 {showEmoji &&
                         <Picker
                     set='apple'
                     title="Escolha o emoji"
-                    onSelect={(emojiTag)=>addEmoji(emojiTag)}
+                    onSelect={(emojiTag:BaseEmoji)=>addEmoji(emojiTag)}
                     style={{position: 'absolute',
                         top: '-412px',
                         right:' 90px'}}
