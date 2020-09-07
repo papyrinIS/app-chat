@@ -23,14 +23,14 @@ import {UserT} from "../Types";
 
 export const MainBlock = styled.div`
 color: #fff;
-font-size: 25px;
+font-size: 14px;
 display: grid;
 grid-template-areas: 
 "userInfo chat"
 "rooms chat"
 "users chat"
 "users newMessage";
-grid-template-rows: 50px 150px 400px 80px;
+grid-template-rows: 50px 110px 400px 80px;
 grid-template-columns: 200px 700px;
 `
 export const UserInfoBlock = styled.div`
@@ -42,6 +42,9 @@ flex-direction: column;
 justify-content: left;
 align-items: flex-start;
 padding: 10px;
+& div{
+height: 16px;
+}
 
 `
 export const Rooms = styled.div`
@@ -59,9 +62,9 @@ margin:0 0 0 10px;
 
 `
 export const WorkRoom = styled.div<{bgColor:string}>`
-padding: 15px;
-width: 90%;
-height: 25px;
+padding: 10px 0 10px 20px;
+    width: 90%;
+    height: 25px;
 background: ${props => props.bgColor};
 transition: .5s ease-in;
 &:hover{
@@ -71,9 +74,9 @@ background: #6190fb;
 `
 export const FloodRoom = styled.div<{bgColor:string}>`
 background: ${props => props.bgColor};
-padding: 15px;
-width: 100%;
-height: 30px;
+padding: 10px 0 10px 20px;
+    width: 90%;
+    height: 25px;
 transition: .5s ease-in;
 &:hover{
 cursor: pointer;
@@ -102,7 +105,7 @@ grid-area: chat;
 background: #f1f5f8;
 border-bottom: 1px solid gray;
 color:#000;
-font-size: 22px;
+font-size: 14px;
 
 `
 
@@ -122,8 +125,8 @@ margin-right: 5px;
 }
 `
 export const Button = styled.img`
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
     padding: 5px 0 0 10px;
     transition: .5s ease;
     &:hover{
@@ -140,8 +143,9 @@ overflow-y: auto;
 background: #fff;
 border-radius: 10px;
 resize: none;
-font-size: 20px;
+font-size: 14px;
 padding: 5px 0 0 5px;
+outline: none;
 `
 export const User = styled.div`
 display: flex;
@@ -150,7 +154,7 @@ align-items: center;
 flex-direction: column;
 div{
 color:#71757f;
-font-size: 20px;
+font-size: 11px;
 font-weight: 500;
 display: flex;
 justify-content: center;
@@ -160,8 +164,8 @@ max-width: 100px;
 }
 `
 export const Indicator = styled.div<{indicator:string}>`
-width: 10px;
-height: 10px;
+width: 6px;
+height: 6px;
 border-radius: 100%;
 background: ${props => props.indicator === 'online' ? '#62bf6e' : '#d51515'};
 `
@@ -283,12 +287,14 @@ export const Main:React.FC<PropsT> = () => {
                 <div onMouseLeave={closeEmoji}>
                 {showEmoji &&
                         <Picker
+                            emojiSize={16}
+                            showSkinTones={false}
                     set='apple'
-                    title="Escolha o emoji"
+                    title="emoji"
                     onSelect={(emojiTag:BaseEmoji)=>addEmoji(emojiTag)}
                     style={{position: 'absolute',
-                        top: '-412px',
-                        right:' 90px'}}
+                        top: '-410px',
+                        right:' 60px'}}
                 />
                 }
                 <Button onMouseOver={ShowEmoji} alt='smiles' src={smile}/>

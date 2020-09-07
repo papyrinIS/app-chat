@@ -7,13 +7,15 @@ export const GET_MESSAGES = 'GET_MESSAGES'
 export const GET_USERS = 'GET_USERS'
 export const CHANGE_CHAT = 'CHANGE_CHAT'
 export const NEW_MESSAGE = 'NEW_MESSAGE'
+export const ERROR = 'ERROR'
 
 export const initialState = {
     isAuth: false,
     userName: '' as string,
     chatName: 'start',
     users: [] as Array<UserT> ,
-    messages: [] as Array<MessageT>
+    messages: [] as Array<MessageT>,
+    isError:false
 }
 
 
@@ -49,6 +51,11 @@ const Reducer = (state = initialState, action:ActionsTypes):initialStateT => {
                     id: action.newMessages.id
                 }
                 ]
+            }
+        case ERROR:
+            return{
+                ...state,
+                isError: action.isError
             }
         default:
             return state

@@ -5,9 +5,9 @@ import deleteIcon from '../img/icons/deleteIcon.png'
 import editIcon from '../img/icons/editIcon.png'
 
 export const PopupBlock=styled.div`
-width: 170px;
-height: 102px;
-font-size: 18px;
+width: 132px;
+height: 74px;
+font-size: 14px;
 background: #b4deee;
 display: flex;
 justify-content: center;
@@ -15,15 +15,15 @@ align-items: center;
 flex-direction: column;
 position: absolute;
 z-index: 10;
-top:45%;
-left: -150px;
+top:25%;
+left: -125px;
 margin-top: 20px;
 
 `
 export const EditBlock=styled.div`
 padding-left: 10px;
-width: 160px;
-height: 50px;
+width: 120px;
+height: 35px;
 border-bottom: 2px solid gray;
 display: flex;
 justify-content: left;
@@ -37,8 +37,8 @@ background: #b4beee;
 `
 export const DeleteBlock=styled.div`
 padding-left: 10px;
-width: 160px;
-height: 50px;
+width: 120px;
+height: 35px;
 display: flex;
 justify-content: left;
 align-items: center;
@@ -51,16 +51,18 @@ background: #b4beee;
 
 export const IconDelete=styled.img`
 
-height: 20px;
-width: 20px;
+height: 15px;
+width: 15px;
+margin-right: 5px;
 transition: .5s ease;
     &:hover{
     cursor: pointer;
     }
 `
 export const IconEdit=styled.img`
-height: 20px;
-width: 20px;
+height: 15px;
+width: 15px;
+margin-right: 5px;
 transition: .5s ease;
     &:hover{
     cursor: pointer;

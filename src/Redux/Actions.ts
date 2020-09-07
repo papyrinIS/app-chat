@@ -1,4 +1,4 @@
-import {ActionsTypes, AUTH, CHANGE_CHAT, GET_MESSAGES, GET_USERS, NEW_MESSAGE} from "./Reducer";
+import {ActionsTypes, AUTH, CHANGE_CHAT, ERROR, GET_MESSAGES, GET_USERS, NEW_MESSAGE} from "./Reducer";
 import {chatAPI} from "../Api/Api";
 import {socket} from "../socket";
 import {BaseThunkType, SocketType} from "./Store";
@@ -9,7 +9,9 @@ export const Actions= {
     getMessagesAC:(messages:Array<MessageT>)=>({type:GET_MESSAGES,messages}as const),
     getUsersAC:(users:Array<UserT>)=>({type:GET_USERS,users}as const),
     changeChatAC:(chatName:string)=>({type:CHANGE_CHAT,chatName}as const),
-    newMessagesAC:(newMessages:MessageT)=>({type:NEW_MESSAGE,newMessages}as const)
+    newMessagesAC:(newMessages:MessageT)=>({type:NEW_MESSAGE,newMessages}as const),
+    errorAC:(isError:boolean)=>({type:ERROR,isError}as const),
+
 }
 
 
@@ -19,8 +21,8 @@ export const AuthThunk = (payload:PayloadT,chatName:string):ThunkT=>async(dispat
         if(data.isAuth===0){
             dispatch(Actions.authAC(data.userName))
             emitJoinSocket(data.userName,chatName)
-        }else{
-            alert('error auth')
+        }else {
+            dispatch(Actions.errorAC(true))
         }
     }catch (e) {
         console.log('error AUTH:', e)

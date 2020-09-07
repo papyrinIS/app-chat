@@ -9,7 +9,7 @@ import {deleteMessageObjT, MessageT} from "../Types";
 import {AppStateT} from "../Redux/Store";
 
 export const ChatWrapper = styled.div`
-height: 658px;
+height: 520px;
 overflow-x: hidden;
 overflow-y: auto;
 padding: 10px 10px 30px 10px;
@@ -27,9 +27,11 @@ display: flex;
 flex-direction: column;
 ${props => props.positionMessage === 'left' ? css`
 -webkit-align-items: flex-start;
+
 `
     : css`
 -webkit-align-items: flex-end;
+
 `}
 
 `
@@ -42,9 +44,10 @@ background: #62bf6e;
 max-width: 75%;
 padding:10px 15px;
 word-break: break-all;
-border-radius: 15px;
 transition: .5s ease;
+border-radius: 15px 15px 15px 0;
 ${(props) => props.me && css`
+border-radius: 15px 15px 0 15px;
 &:hover{
 cursor: pointer;
 background: #62f06e;
@@ -52,8 +55,8 @@ background: #62f06e;
 }
 `
 export const Name = styled.div`
-margin: 0 10px;
-font-size: 15px;
+margin: 0 7px;
+font-size: 10px;
 color:#222422;
 `
 
